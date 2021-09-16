@@ -62,12 +62,45 @@
       background: black;
       position: absolute;
       top: 50%;
+      transition: transform cubic-bezier(0, 2.68, 0.58, 1) 50ms;
+      transform-origin: 100%;
+    }
+
+    .hour-hand {
+      height: 12px;
+    }
+
+    .min-hand {
+
+    }
+
+    .second-hand {
+      height: 3px;
     }
 
   </style>
 
   <script>
 
+    const hourHand = document.querySelector('.hour-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const secondHand = document.querySelector('.second-hand');
+
+    function updateHand(hand, percent) {
+      hand.style.transform = `rotate(${(percent + 0.25) * 360}deg)`
+    }
+
+    setInterval(() => {
+      const dateTime = new Date();
+
+      const secondsPercent = dateTime.getSeconds() / 60;
+      const minutesPercent = (dateTime.getMinutes() + secondsPercent) / 60;
+      const hoursPercent = (dateTime.getHours() + minutesPercent) / 12;
+
+      updateHand(hourHand, hoursPercent);
+      updateHand(minuteHand, minutesPercent);
+      updateHand(secondHand, secondsPercent);
+    }, 100)
 
   </script>
 </body>
