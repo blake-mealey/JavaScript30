@@ -24,11 +24,17 @@
     }
 
     .panels {
+      display: flex;
+
       min-height: 100vh;
       overflow: hidden;
     }
 
     .panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
       background: #6B0F9C;
       box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
       color: white;
@@ -53,9 +59,21 @@
 
     /* Flex Children */
     .panel > * {
+      flex: 1 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+    }
+
+    .panel > *:first-child {
+      transform: translateY(-100%);
+    }
+    .panel > *:last-child {
+      transform: translateY(100%);
     }
 
     .panel p {
@@ -71,6 +89,13 @@
 
     .panel.open {
       font-size: 40px;
+      flex: 5;
+    }
+    .panel.open > *:first-child {
+      transform: translateY(0);
+    }
+    .panel.open > *:last-child {
+      transform: translateY(0);
     }
 
   </style>
@@ -105,7 +130,17 @@
   </div>
 
   <script>
-
+  Array.from(document.querySelectorAll('.panel')).forEach(p => {
+    p.addEventListener('click', () => {
+      const open = document.querySelector('.panel.open');
+      if (open) {
+        open.classList.remove('open');
+      }
+      if (p !== open) {
+        p.classList.add('open');
+      }
+    })
+  })
   </script>
 
 
