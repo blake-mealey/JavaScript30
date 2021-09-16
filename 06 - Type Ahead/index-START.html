@@ -17,6 +17,57 @@
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
+async function getCities() {
+  const res = await fetch(endpoint);
+  if (!res.ok) {
+    throw new Error('something went wrong');
+  }
+  return res.json();
+}
+
+async function init() {
+  const cities = await getCities();
+
+  const listEl = document.querySelector('.suggestions');
+  const search = document.querySelector('.search');
+
+  search.addEventListener('input', () => {
+    const v = search.value;
+    const vLen = v.length;
+
+    const items = [];
+    for (let i = 0; i < cities.length; i++) {
+      const {city,state,population} = cities[i];
+      const cityMatch = city.toLowerCase().indexOf(v);
+      const stateMatch = state.toLowerCase().indexOf(v);
+
+      if (cityMatch === -1 && stateMatch === -1) {
+        continue;
+      }
+
+      let cityMarkup;
+      if (cityMatch === -1) {
+        cityMarkup = city;
+      } else {
+        cityMarkup = `${city.substring(0, cityMatch)}<mark>${city.substring(cityMatch, cityMatch + vLen)}</mark>${city.substring(cityMatch + vLen)}`
+      }
+
+      let stateMarkup;
+      if (stateMatch === -1) {
+        stateMarkup = state;
+      } else {
+        stateMarkup = `${state.substring(0, stateMatch)}<mark>${state.substring(stateMatch, stateMatch + vLen)}</mark>${state.substring(stateMatch + vLen)}`
+      }
+
+      items.push(`<li><span>${cityMarkup}, ${stateMarkup}</span><span class="population">${population}</span></li>`)
+    }
+
+    listEl.innerHTML = items.join('\n');
+  })
+}
+
+init();
+
 </script>
 </body>
 </html>
