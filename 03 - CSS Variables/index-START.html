@@ -26,6 +26,12 @@
       misc styles, nothing to do with CSS variables
     */
 
+    :root {
+      --base-color: #ffc600;
+      --blur: 10px;
+      --spacing: 10px;
+    }
+
     body {
       text-align: center;
       background: #193549;
@@ -42,9 +48,35 @@
     input {
       width: 100px;
     }
+
+    .hl {
+      color: var(--base-color);
+    }
+
+    img {
+      padding: var(--spacing);
+      background-color: var(--base-color);
+      filter: blur(var(--blur));
+    }
   </style>
 
   <script>
+    const root = document.querySelector(':root');
+
+    const spacing = document.getElementById('spacing');
+    spacing.addEventListener('input', () => {
+      root.style.setProperty('--spacing', `${spacing.value}px`);
+    });
+
+    const blur = document.getElementById('blur');
+    blur.addEventListener('input', () => {
+      root.style.setProperty('--blur', `${blur.value}px`);
+    });
+
+    const baseColor = document.getElementById('base');
+    baseColor.addEventListener('input', () => {
+      root.style.setProperty('--base-color', baseColor.value);
+    });
   </script>
 
 </body>
