@@ -1,19 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
-</head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.getElementById('draw');
+      const ctx = canvas.getContext('2d');
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
 
-</body>
+      let pen = {
+        down: false,
+        stroke: 10,
+        hue: 0,
+        lastPos: [0, 0],
+        strokeDir: 1,
+      };
+
+      function penDown(event) {
+        pen.down = true;
+        pen.lastPos = [event.offsetX, event.offsetY];
+      }
+
+      function penJump(event) {
+        pen.lastPos = [event.offsetX, event.offsetY];
+      }
+
+      function penUp() {
+        pen.down = false;
+      }
+
+      function penMove(event) {
+        if (!pen.down) {
+          return;
+        }
+
+        const pos = [event.offsetX, event.offsetY];
+
+        ctx.beginPath();
+        ctx.moveTo(...pen.lastPos);
+        ctx.strokeStyle = `hsl(${pen.hue}, 100%, 50%)`;
+        ctx.lineWidth = pen.stroke;
+        ctx.lineTo(...pos);
+        ctx.stroke();
+
+        pen.lastPos = pos;
+
+        pen.stroke += pen.strokeDir;
+        if (pen.stroke < 10) {
+          pen.strokeDir = 1;
+        } else if (pen.stroke > 100) {
+          pen.strokeDir = -1;
+        }
+
+        pen.hue = (pen.hue + 1) % 360;
+      }
+
+      canvas.addEventListener('mousedown', penDown);
+      canvas.addEventListener('mouseenter', penJump);
+      canvas.addEventListener('mouseup', penUp);
+      canvas.addEventListener('mousemove', penMove);
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+    </style>
+  </body>
 </html>
