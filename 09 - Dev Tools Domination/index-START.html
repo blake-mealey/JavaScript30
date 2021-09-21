@@ -1,46 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Console Tricks!</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Console Tricks!</title>
+  </head>
+  <body>
+    <p onClick="makeGreen()">×BREAK×DOWN×</p>
 
-  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+    <script>
+      const dogs = [
+        { name: 'Snickers', age: 2 },
+        { name: 'hugo', age: 8 },
+      ];
 
-  <script>
-    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+      function makeGreen() {
+        const p = document.querySelector('p');
+        p.style.color = '#BADA55';
+        p.style.fontSize = '50px';
+      }
 
-    function makeGreen() {
+      // Regular
+      console.log('hello');
+
+      // Interpolated
+      console.log('hello %s', 'world');
+
+      // Styled
+      console.log('%cI am some great text', 'color: green;');
+
+      // warning!
+      console.warn('warn');
+
+      // Error :|
+      console.error('err');
+
+      // Info
+      console.info('Something crazy');
+
+      // Testing
+      console.assert(1 === 2, 'something went wrong');
+
+      // clearing
+      //console.clear();
+
+      // Viewing DOM Elements
       const p = document.querySelector('p');
-      p.style.color = '#BADA55';
-      p.style.fontSize = '50px';
-    }
+      console.log(p);
+      console.dir(p);
 
-    // Regular
+      // Grouping together
+      dogs.forEach((dog) => {
+        console.groupCollapsed(dog.name);
+        console.log(dog.name);
+        console.log(dog.age);
+        console.groupEnd(dog.name);
+      });
 
-    // Interpolated
+      // counting
+      console.count('bob');
+      console.count('bob');
+      console.count('jimbo');
+      console.count('bob');
+      console.count('bob');
+      console.count('jimbo');
 
-    // Styled
+      // timing
+      console.time('fetch data');
+      setTimeout(() => {
+        console.timeEnd('fetch data');
+        console.log('fetched!');
+      }, 500);
 
-    // warning!
-
-    // Error :|
-
-    // Info
-
-    // Testing
-
-    // clearing
-
-    // Viewing DOM Elements
-
-    // Grouping together
-
-    // counting
-
-    // timing
-
-  </script>
-</body>
+      console.table(dogs);
+    </script>
+  </body>
 </html>
